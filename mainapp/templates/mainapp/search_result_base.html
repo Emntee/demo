@@ -1,0 +1,29 @@
+{% extends 'mainapp/base.html' %}
+
+{% block stylesheet %}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'mainapp/css/search_result_base.css' %}">
+{% endblock %}
+
+{% block extrastyle%}{%endblock%}
+
+{% block main %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="left-part col-md-5 col-lg-5">
+            {% block left %}
+            {% endblock %}
+        </div>
+        <div class="right-part col-md-7 col-lg-7">
+            {% block right %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block scripts %}{% endblock %}

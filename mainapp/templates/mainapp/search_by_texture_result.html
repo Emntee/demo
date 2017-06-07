@@ -1,0 +1,523 @@
+{% extends 'mainapp/search_result_base.html' %}
+
+{% block stylesheet %}
+{{block.super}}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'mainapp/css/search_by_texture_result.css' %}">
+{% endblock %}
+
+{% block left %}
+<div class="narrow-panel">
+    <div class="panel-head">
+        <h5 class="panel-title">关键字信息</h5>
+        <ul class="panel-head-btn-group"> 
+            <li><a href="{% url 'search-page' %}"><i class="fa fa-undo">&nbsp;</i>重新搜索</a></li>
+        </ul>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>花色</th>
+                    <th>起始时间</th>
+                    <th>截至时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{query_info.texture}}</td>
+                    <td>{{query_info.start_date|date:"Y-m-d"}}</td>
+                    <td>{{query_info.end_date|date:"Y-m-d"}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="narrow-panel sum-info">
+    <div class="panel-head">
+        <p class="panel-title">汇总信息</p>
+    </div>
+    <div class="panel-body">
+        <a class="col-md-12 detail-bar active" href="#greign-yarn-records" data-toggle="tab">
+            <div class="text-primary detail-bar-title">原纱</div>
+            <div class="detail-bar-body">
+                <ul class="detail-bar-list">
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">总长度</div>
+                        <div class="detail-bar-item-body">{{greign_yarn.sum.length}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">总额</div>
+                        <div class="detail-bar-item-body">{{greign_yarn.sum.sum_price}}</div>
+                    </li>
+                </ul>
+            </div>
+        </a>
+        <a class="col-md-12 detail-bar" href="#painting-records" data-toggle="tab">
+            <div class="text-primary detail-bar-title">染色</div>
+            <div class="detail-bar-body">
+                <ul class="detail-bar-list">
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">总长度</div>
+                        <div class="detail-bar-item-body">{{painting.sum.length}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">总额</div>
+                        <div class="detail-bar-item-body">{{painting.sum.sum_price}}</div>
+                    </li>
+                </ul>
+            </div>
+        </a>
+        <a class="col-md-12 detail-bar" href="#winding-records" data-toggle="tab">
+            <div class="text-primary detail-bar-title">出轴</div>
+            <div class="detail-bar-body">
+                <ul class="detail-bar-list">
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">总长度</div>
+                        <div class="detail-bar-item-body">{{winding.sum.length}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">总额</div>
+                        <div class="detail-bar-item-body">{{winding.sum.sum_price}}</div>
+                    </li>
+                </ul>
+            </div>
+        </a>
+        <a class="col-md-12 detail-bar" href="#weaving-records" data-toggle="tab">
+            <div class="text-primary detail-bar-title">织造</div>
+            <div class="detail-bar-body">
+                <ul class="detail-bar-list">
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">坯布总长</div>
+                        <div class="detail-bar-item-body">{{weaving.sum.length}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">总额</div>
+                        <div class="detail-bar-item-body">{{weaving.sum.sum_price}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">大样总额</div>
+                        <div class="detail-bar-item-body">{{weaving.sum.full_page_proof_sum}}</div>
+                    </li>
+                </ul>
+            </div>
+        </a>
+        <a class="col-md-12 detail-bar" href="#post-processing-records" data-toggle="tab">
+            <div class="text-primary detail-bar-title">整理</div>
+            <div class="detail-bar-body">
+                <ul class="detail-bar-list">
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">总长度</div>
+                        <div class="detail-bar-item-body">{{post_processing.sum.length}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">总额</div>
+                        <div class="detail-bar-item-body">{{post_processing.sum.sum_price}}</div>
+                    </li>
+                </ul>
+            </div>
+        </a>
+        <a class="col-md-12 detail-bar" href="#bleaching-records" data-toggle="tab">
+            <div class="text-primary detail-bar-title">漂白</div>
+            <div class="detail-bar-body">
+                <ul class="detail-bar-list">
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">总长度</div>
+                        <div class="detail-bar-item-body">{{bleaching.sum.length}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">总额</div>
+                        <div class="detail-bar-item-body">{{bleaching.sum.sum_price}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">打样</div>
+                        <div class="detail-bar-item-body">{{bleaching.sum.design_drawing_sum}}</div>
+                    </li>
+                </ul>
+            </div>
+        </a>
+        <a class="col-md-12 detail-bar" href="#printing-records" data-toggle="tab">
+            <div class="text-primary detail-bar-title">印花</div>
+            <div class="detail-bar-body">
+                <ul class="detail-bar-list">
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">总长度</div>
+                        <div class="detail-bar-item-body">{{printing.sum.length}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">总额</div>
+                        <div class="detail-bar-item-body">{{printing.sum.sum_price}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">上机总额</div>
+                        <div class="detail-bar-item-body">{{printing.sum.machine_work_sum}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">版费总额</div>
+                        <div class="detail-bar-item-body">{{printing.sum.layout_sum}}</div>
+                    </li>
+                </ul>
+            </div>
+        </a>
+        <a class="col-md-12 detail-bar" href="#storing-records" data-toggle="tab">
+            <div class="text-primary detail-bar-title">入库</div>
+            <div class="detail-bar-body">
+                <ul class="detail-bar-list">
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">A等品总长</div>
+                        <div class="detail-bar-item-body">{{storing.sum.a_class_length}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">A等品卷数</div>
+                        <div class="detail-bar-item-body">{{storing.sum.a_class_roll_sum}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">B等品总长</div>
+                        <div class="detail-bar-item-body">{{storing.sum.b_class_length}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">B等品卷数</div>
+                        <div class="detail-bar-item-body">{{storing.sum.b_class_roll_sum}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">C等品总长</div>
+                        <div class="detail-bar-item-body">{{storing.sum.c_class_length}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">C等品卷数</div>
+                        <div class="detail-bar-item-body">{{storing.sum.c_class_roll_sum}}</div>
+                    </li>
+                </ul>
+            </div>
+        </a>
+        <a class="col-md-12 detail-bar" href="#delivering-records" data-toggle="tab">
+            <div class="text-primary detail-bar-title">发货</div>
+            <div class="detail-bar-body">
+                <ul class="detail-bar-list">
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">发货数量</div>
+                        <div class="detail-bar-item-body">{{delivering.sum.length}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">发货卷数</div>
+                        <div class="detail-bar-item-body">{{delivering.sum.roll_sum}}</div>
+                    </li>
+                    <li class="detail-bar-item">
+                        <div class="detail-bar-item-title">运费</div>
+                        <div class="detail-bar-item-body">{{delivering.sum.sum_price}}</div>
+                    </li>
+                </ul>
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block right %}
+<div class="tab-content">
+    <div id="greign-yarn-records" class="tab-pane fade in active">
+        <div class="narrow-panel">
+            <div class="panel-head">
+                <h5 class="panel-title">原纱记录</h5>
+            </div>
+            <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>长度</th>
+                    <th>单价</th>
+                    <th>总价</th>
+                    <th>供应商</th>
+                    <th>录入时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for record in greign_yarn.records %}
+                    <tr>
+                        <td>{{record.length}}</td>
+                        <td>{{record.price}}</td>
+                        <td>{{record.sum_price}}</td>
+                        <td>{{record.supplier.name}}</td>
+                        <td>{{record.created_at|date:"Y-m-d"}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        </div>
+        
+        
+    </div>
+    <div id="painting-records" class="tab-pane fade">
+        <div class="narrow-panel">
+            <div class="panel-head"><h5 class="panel-title">染色记录</h5></div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>长度</th>
+                        <th>单价</th>
+                        <th>总价</th>
+                        <th>供应商</th>
+                        <th>录入时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in painting.records %}
+                        <tr>
+                            <td>{{record.length}}</td>
+                            <td>{{record.price}}</td>
+                            <td>{{record.sum_price}}</td>
+                            <td>{{record.supplier.name}}</td>
+                            <td>{{record.created_at|date:"Y-m-d"}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="winding-records" class="tab-pane fade">
+        <div class="narrow-panel">
+            <div class="panel-head"><h5 class="panel-title">出轴记录</h5></div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>长度</th>
+                            <th>单价</th>
+                            <th>总价</th>
+                            <th>供应商</th>
+                            <th>机型</th>
+                            <th>录入时间</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in winding.records %}
+                            <tr>
+                                <td>{{record.length}}</td>
+                                <td>{{record.price}}</td>
+                                <td>{{record.sum_price}}</td>
+                                <td>{{record.supplier.name}}</td>
+                                <td>{{record.model}}</td>
+                                <td>{{record.created_at|date:"Y-m-d"}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="weaving-records" class="tab-pane fade">
+        <div class="narrow-panel">
+            <div class="panel-head">
+                <h5 class="panel-title">织造记录</h5>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>长度</th>
+                        <th>单价(元/纬)</th>
+                        <th>单价(元/米)</th>
+                        <th>总价</th>
+                        <th>供应商</th>
+                        <th>大样</th>
+                        <th>录入时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in weaving.records %}
+                        <tr>
+                            <td>{{record.length}}</td>
+                            <td>{{record.raw_price}}</td>
+                            <td>{{record.price}}</td>
+                            <td>{{record.sum_price}}</td>
+                            <td>{{record.supplier.name}}</td>
+                            <td>{{record.full_page_proof_price}}</td>
+                            <td>{{record.created_at|date:"Y-m-d"}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="post-processing-records" class="tab-pane fade">
+        <div class="narrow-panel">
+            <div class="panel-head"><h5 class="panel-title">整理记录</h5></div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>长度</th>
+                        <th>单价</th>
+                        <th>总价</th>
+                        <th>供应商</th>
+                        <th>整理方式</th>
+                        <th>录入时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in post_processing.records %}
+                        <tr>
+                            <td>{{record.length}}</td>
+                            <td>{{record.price}}</td>
+                            <td>{{record.sum_price}}</td>
+                            <td>{{record.supplier.name}}</td>
+                            <td>{{record.method}}</td>
+                            <td>{{record.created_at|date:"Y-m-d"}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="bleaching-records" class="tab-pane fade">
+        <div class="narrow-panel">
+            <div class="panel-head">
+                <h5 class="panel-title">漂白记录</h5>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>长度</th>
+                        <th>单价</th>
+                        <th>总价</th>
+                        <th>供应商</th>
+                        <th>打样费</th>
+                        <th>录入时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in bleaching.records %}
+                        <tr>
+                            <td>{{record.length}}</td>
+                            <td>{{record.price}}</td>
+                            <td>{{record.sum_price}}</td>
+                            <td>{{record.supplier.name}}</td>
+                            <td>{{record.design_drawing_price}}</td>
+                            <td>{{record.created_at|date:"Y-m-d"}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="printing-records" class="tab-pane fade">
+        <div class="narrow-panel">
+            <div class="panel-head">
+                <h5 class="panel-title">印花记录</h5>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>长度</th>
+                        <th>单价</th>
+                        <th>总价</th>
+                        <th>供应商</th>
+                        <th>上机费</th>
+                        <th>版费</th>
+                        <th>录入时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in printing.records %}
+                        <tr>
+                            <td>{{record.length}}</td>
+                            <td>{{record.price}}</td>
+                            <td>{{record.sum_price}}</td>
+                            <td>{{record.supplier.name}}</td>
+                            <td>{{record.machine_work_price}}</td>
+                            <td>{{record.layout_price}}</td>
+                            <td>{{record.created_at|date:"Y-m-d"}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="storing-records" class="tab-pane fade">
+        <div class="narrow-panel">
+            <div class="panel-head">
+                <h5 class="panel-title">入库记录</h5>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>A等品卷数</th>
+                        <th>B等品卷数</th>
+                        <th>C等品卷数</th>
+                        <th>A等品长度</th>
+                        <th>B等品长度</th>
+                        <th>C等品长度</th>
+                        <th>降B等原因</th>
+                        <th>降C等原因</th>
+                        <th>入库时间</th>
+                        <th>录入时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in storing.records %}
+                        <tr>
+                            <td>{{record.a_class_roll_count}}</td>
+                            <td>{{record.b_class_roll_count}}</td>
+                            <td>{{record.c_class_roll_count}}</td>
+                            <td>{{record.a_class_length}}</td>
+                            <td>{{record.b_class_length}}</td>
+                            <td>{{record.c_class_length}}</td>
+                            <td>{{record.reason_degrade_2_B}}</td>
+                            <td>{{record.reason_degrade_2_C}}</td>
+                            <td>{{record.storing_date|date:"Y-m-d"}}</td>
+                            <td>{{record.created_at|date:"Y-m-d"}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="delivering-records" class="tab-pane fade">
+        <div class="narrow-panel">
+            <div class="panel-head">
+                <h5 class="panel-title">发货记录</h5>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>发货日期</th>
+                        <th>发货长度</th>
+                        <th>发货卷数</th>
+                        <th>卷号</th>
+                        <th>运费</th>
+                        <th>运输单价</th>
+                        <th>录入时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in delivering.records %}
+                        <tr>{{record.delivering_date|date:"Y-m-d"}}</tr>
+                        <tr>{{record.length}}</tr>
+                        <tr>{{record.roll_count}}</tr>
+                        <tr>{{record.roll_id}}</tr>
+                        <tr>{{record.sum_price}}</tr>
+                        <tr>{{record.price}}</tr>
+                        <tr>{{record.created_at|date:"Y-m-d"}}</tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>  
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'asset/css/bootstrap.css' %}">
+    <style>
+        .header{
+            background-color: #333;
+        }
+        .header .title-container{
+            padding: 4px 12px;
+            width: 960px;
+            margin: 0 auto;
+        }
+        .header .title{
+            color: #fff;
+        }
+        .login-box{
+            position: relative;
+            width:380px;
+            margin-left: 50%;
+            left: -190px;
+            margin-top: 120px;
+        }
+        .copy-container{
+            padding: 20px 0;
+            width: 960px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        footer{
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            /*margin-top: 20px;*/
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <div class="title-container">
+        <h3 class="title">生产资料核算平台</h3>
+    </div>
+</header>
+<div class="panel panel-default login-box">
+    <div class="panel-heading">
+        <h5 class="panel-title">登陆</h5>
+    </div>
+    <div class="panel-body">
+        {% if error %}
+        <p>{{error}}</p>
+        {% endif %}
+        <form class="form" action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username-input">用户名</label> <input id="username-input" type="text" class="form-control" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password-input">密码</label> <input id="password-input" type="password" class="form-control" name="password" required>
+            </div>
+            <div class="form-group">
+                <input type="hidden" name="next" value={{request.META.HTTP_REFERER}}>
+                <button class="btn btn-primary pull-right" type="submit">登陆</button>
+                <a href="#" class="btn btn-link">创建账号</a>
+            </div>
+        </form>
+    </div>
+</div>
+<footer>
+    <div class="copy-container">
+        <p>&copy; by 2017 联荣集团</p>
+    </div>
+</footer>
+</body>
+</html>

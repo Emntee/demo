@@ -1,0 +1,46 @@
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+.btn{
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: green;
+    color: snow;
+    cursor: pointer;
+    transition: .3s linear;
+    min-width: 80px;
+}
+.btn:hover{
+    background-color: #124112;
+}
+.icon{
+    margin-right: 5px;
+}
+.hint{
+    font-size: .9em;
+    color: #444;
+}
+.text-link{
+    font-weight: 700;
+    color: #333;
+    text-decoration: None;
+}
+.error-info{
+    color: darkred;
+    font-size: .9em;
+}
+.text-input{
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+/*text-input-line-bottomed*/
+.text-input-lb{
+    padding: 5px 10px;
+    border-bottom: 1px solid #555;
+}
+.short-input{
+    width: 100px;
+}

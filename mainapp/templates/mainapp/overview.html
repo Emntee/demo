@@ -1,0 +1,131 @@
+{% extends "mainapp/base.html"%}
+
+{% block stylesheet %}
+{% load staticfiles%}
+<link rel="stylesheet" href="{% static 'asset/css/dataTables.bootstrap.css' %}">
+{% endblock %}
+
+{% block extrastyle %}
+<style>
+    .tabs-container{
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabs-container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#data-from-yesterday" data-toggle="tab">昨日进度</a></li>
+                    <li><a href="#overview" data-toggle="tab">总览</a></li>
+                </ul>
+            </div>
+            <div class="tab-content">
+                <div id="data-from-yesterday" class="tab-pane fade in active">
+                    <table id="data-from-yesterday-tb" class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>编号</th>
+                            <th>出轴</th>
+                            <th>织造</th>
+                            <th>整理</th>
+                            <th>漂白</th>
+                            <th>印花</th>
+                            <th>入库</th>
+                            <th>发货</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for entry in entries_updated_yesterday %}
+                        <tr>
+                            <td>{{entry.texture}}</td>
+                            <td>{{entry.winding}}</td>
+                            <td>{{entry.weaving}}</td>
+                            <td>{{entry.post_process}}</td>
+                            <td>{{entry.bleaching}}</td>
+                            <td>{{entry.printing}}</td>
+                            <td>{{entry.storing}}</td>
+                            <td>{{entry.delivering}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div id="overview" class="tab-pane fade">
+                    <table id="overview-tb" class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>花色</th>
+                            <th>接单/合同日期</th>
+                            <th>客户</th>
+                            <th>合同数/入库/发货</th>
+                            <th>投产/织造</th>
+                            <th>经长/出轴</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for entry in all_entries %}
+                        <tr>
+                            <td>{{entry.texture}}</td>
+                            <td>{{entry.order_date|date:"Y-m-d"}}/{{entry.contract_date|date:"Y-m-d"}}</td>
+                            <td>{{entry.client}}</td>
+                            <td>{{entry.order_quantity}}/{{entry.storage_summury.a_class_length}}/{{entry.delivering_summury.length}}</td>
+                            <td>{{entry.in_production}}/{{entry.weaving_summury.length}}</td>
+                            <td>{{entry.proc_calc_length}}/{{entry.winding_summury.length}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+{% block scripts %}
+{% load staticfiles %}
+<script src="{% static "asset/js/jquery.dataTables.js" %}"></script>
+<script src="{% static "asset/js/dataTables.bootstrap.js" %}"></script>
+<script>
+    $(function(){
+        var lang_config = {
+            "decimal":        "",
+            "emptyTable":     "暂未有相关记录",
+            "info":           "从 _START_ 条到 _END_ 条，共计 _TOTAL_ 条",
+            "infoEmpty":      "从 0 到 0 条，共计 0 条",
+            "infoFiltered":   "(从 _MAX_ 条记录过滤出结果)",
+            "infoPostFix":    "",
+            "thousands":      ",",
+            "lengthMenu":     "显示 _MENU_ 条记录",
+            "loadingRecords": "加载中...",
+            "processing":     "处理中...",
+            "search":         "搜索:",
+            "zeroRecords":    "未找到匹配项",
+            "paginate": {
+                "first":      "第一页",
+                "last":       "最后一页",
+                "next":       "下一页",
+                "previous":   "前一页"
+            },
+            "aria": {
+                "sortAscending":  ": activate to sort column ascending",
+                "sortDescending": ": activate to sort column descending"
+            }
+        }
+        $("#data-from-yesterday-tb").dataTable({
+            "language": lang_config
+        });
+        $("#overview-tb").dataTable({
+            "language": lang_config
+        })
+
+    })
+</script>
+{% endblock %}

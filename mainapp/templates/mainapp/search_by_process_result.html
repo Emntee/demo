@@ -1,0 +1,124 @@
+{% extends 'mainapp/search_result_base.html' %}
+
+{% block stylesheet %}
+{{block.super}}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'mainapp/css/search_by_process_result.css' %}">
+<link rel="stylesheet" href="{% static 'asset/css/dataTables.bootstrap.css' %}">
+{% endblock %}
+
+{% block left %}
+<div class="narrow-panel">
+    <div class="panel-head">
+        <h5 class="panel-title">关键字信息</h5>
+        <ul class="panel-head-btn-group"> 
+            <li><a href="{% url 'search-page' %}"><i class="fa fa-undo">&nbsp;</i>重新搜索</a></li>
+        </ul>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>工序</th>
+                    <th>起始时间</th>
+                    <th>截至时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="process" data-process-en="{{query_info.process_en}}">{{query_info.process_zh}}</td>
+                    <td id="start-date">{{query_info.start_date|date:"Y-m-d"}}</td>
+                    <td id="end-date">{{query_info.end_date|date:"Y-m-d"}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="narrow-panel">
+    <div class="panel-head">汇总信息</div>
+    <div class="panel-body">
+        <table id="summury-table" class="table table-hover">
+            <thead>
+                <tr>
+                    {% for label in summury_labels_zh %}
+                    <th>{{label}}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for texture_data in data %}
+                <tr>
+                    {% for slot in texture_data %}
+                    <td>{{slot}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block right %}
+<div class="narrow-panel">
+    <div class="panel-head">详细信息</div>
+    <div class="penl-body">
+        <table id="texture-records-table" class="table table-hover">
+            <thead>
+                <tr>
+                    {% for label in record_labels_zh %}
+                    <th>{{label}}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static "asset/js/jquery.dataTables.js" %}"></script>
+<script src="{% static "asset/js/dataTables.bootstrap.js" %}"></script>
+<script>
+    $(function(){
+        var table = $("#texture-records-table").DataTable({
+            "language":{
+                "decimal":        "",
+                "emptyTable":     "点击汇总信息中的条目可在此处获取详细信息",
+                "info":           "从 _START_ 条到 _END_ 条，共计 _TOTAL_ 条",
+                "infoEmpty":      "从 0 到 0 条，共计 0 条",
+                "infoFiltered":   "(从 _MAX_ 条记录过滤出结果)",
+                "infoPostFix":    "",
+                "thousands":      ",",
+                "lengthMenu":     "显示 _MENU_ 条记录",
+                "loadingRecords": "加载中...",
+                "processing":     "处理中...",
+                "search":         "搜索:",
+                "zeroRecords":    "未找到匹配项",
+                "paginate": {
+                    "first":      "第一页",
+                    "last":       "最后一页",
+                    "next":       "下一页",
+                    "previous":   "前一页"
+                },
+                "aria": {
+                    "sortAscending":  ": activate to sort column ascending",
+                    "sortDescending": ": activate to sort column descending"
+                }
+            }
+        });
+        $("#summury-table>tbody>tr").click(function(){
+            var texture = $(this).find("td").first().html();
+            var process = $("#process").data("process-en");
+            var startDate = $("#start-date").html();
+            var endDate = $("#end-date").html();
+
+            var url_template = "{% url 'get-records' 'texture' 'process' '0000-00-00' '9999-12-31'%}";
+            var ajaxUrl = url_template.replace("texture", texture).replace("process", process).replace("0000-00-00", startDate).replace("9999-12-31", endDate)
+            table.ajax.url(ajaxUrl).load();
+        })
+    })
+</script>
+
+{% endblock %}

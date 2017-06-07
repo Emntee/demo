@@ -1,0 +1,32 @@
+th, td, p, i{
+    font-size: 12px;
+}
+
+.narrow-panel{
+    border-radius: 4px
+}
+.narrow-panel .panel-head a{
+    /*padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 4px;
+    padding-right: 4px;*/
+    font-size: 14px;
+}
+.narrow-panel .panel-body{
+    padding:4px;
+}
+.narrow-panel .panel-title{
+    display: inline-block;
+    font-size: 14px;
+}
+.panel-head .panel-head-btn-group{
+    display: inline-block;
+    list-style: None;
+    margin-bottom: 0;
+}
+.panel-head .panel-head-btn-group li{
+    display: inline-block;
+}
+.panel-head .panel-head-btn-group li a{
+    text-decoration: None;
+}
